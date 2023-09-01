@@ -9,5 +9,9 @@ namespace SampleLoginApp.Data
             : base(options)
         {
         }
+
+        public virtual DbSet<Product> Products { get; set; }
+
+
     }
 }

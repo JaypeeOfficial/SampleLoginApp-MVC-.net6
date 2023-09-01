@@ -5,8 +5,7 @@ using System.Diagnostics;
 
 namespace SampleLoginApp.Controllers
 {
-    [Authorize]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public HomeController()
         {

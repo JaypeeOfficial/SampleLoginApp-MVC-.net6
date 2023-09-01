@@ -1,0 +1,20 @@
+﻿@model Product 
+<div class="content">
+    <h2>Delete Product</h2>
+    <hr/>
+
+ <div class="row">
+     <form asp-action="ConfirmedDelete" asp-route-id="@Model.Id" method="post">
+         @Html.AntiForgeryToken()
+         <div class="alert alert-warning">
+             Are you sure you want to delete @Model.ProductName?
+         </div>
+
+         <div class="col-12">
+             <a asp-action="Index" class="btn btn-primary">Cancel</a>
+             <button type="submit" class="btn btn-danger">Delete</button>
+         </div>
+     </form>
+ </div>
+
+</div>

@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SampleLoginApp.Contracts;
 using SampleLoginApp.Data;
+using SampleLoginApp.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,7 @@ builder.Services.AddDefaultIdentity<AppIdentity>(options => {
     })
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

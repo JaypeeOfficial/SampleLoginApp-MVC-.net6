@@ -1,15 +1,89 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SampleLoginApp.Contracts;
+using SampleLoginApp.Data;
 
 namespace SampleLoginApp.Controllers
 {
 
-    [Authorize]
-    public class ProductController : Controller
+    public class ProductController : BaseController
     {
-        public IActionResult Index()
+        private readonly IBaseRepository<Product> _repo;
+        public ProductController(IBaseRepository<Product> repo)
         {
-            return View();
+            _repo = repo;
         }
-    }
+
+        public async Task<IActionResult> Index()
+        {
+            var products = await _repo.GetAll();
+
+            return View(products);
+        }
+
+        public IActionResult Create()
+        {
+            return View(new Product());
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Product product)
+        {
+           if(!ModelState.IsValid)
+                return View(product);
+
+           await _repo.Create(product);
+
+            TempData["Message"] = $"Already added new products {product.ProductName}";
+
+            return RedirectToAction("Index");
+        }
+
+        public async Task <IActionResult> Edit(int id)
+        {
+            var entity = await _repo.GetOne(id);
+            if (entity == null)
+                return NotFound();
+
+            return View(entity);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(Product product)
+        {
+            if (!ModelState.IsValid)
+                return View(product);
+
+            await _repo.Update(product.Id, new {product.ProductName, product.ProductDescription});
+
+            TempData["Message"] = $"Update na ung product na {product.ProductName}";
+
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var entity = await _repo.GetOne(id);
+            if (entity == null)
+                return NotFound();
+
+            return View(entity);
+        }
+
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> ConfirmedDelete(int id)
+        {
+            await _repo.Delete(id);
+
+            TempData["Message"] = $"Delete na ung product na may id na {id}";
+
+            return RedirectToAction("Index");   
+        }
+
+    } 
 }

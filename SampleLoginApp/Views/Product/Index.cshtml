@@ -1,3 +1,51 @@
-﻿<div class="text-center">
-    This is a Product Page.
-</div>
+﻿@model IEnumerable<Product>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+
+    <div class="content">
+        <h2>Products</h2>
+        <hr/>
+        <div class="row">
+
+            @if (TempData["Message"] != null)
+            {
+               <div class="alert alert-success alert-dismissible fade show" role="alert">
+                   @TempData["Message"]
+                   <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+               </div>
+            }
+        </div>
+
+            <div class="col-12">
+         <a asp-action="Create" class="btn btn-primary mb-2"> New Product</a>
+                  <table class="table table-bordered table-hover table-sm font-sm">
+                      <colgroup>
+                           <col class="col-3"/>
+                           <col class="col-7" />
+                           <col class="col-2" />       
+                      </colgroup>
+                      <thead class="bg-danger text-light">
+                          <tr>
+                              <th>Name</th>
+                              <th>Description</th>
+                               <th></th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          @foreach (var product in Model)
+                    {
+                        <tr>
+                            <td>@product.ProductName</td>
+                            <td>@product.ProductDescription</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-info">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                  </table>
+            </div>
+    </div>
+    
