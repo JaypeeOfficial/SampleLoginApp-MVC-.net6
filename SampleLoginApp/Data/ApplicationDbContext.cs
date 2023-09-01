@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SampleLoginApp.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<AppIdentity>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
