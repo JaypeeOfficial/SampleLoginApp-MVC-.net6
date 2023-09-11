@@ -10,5 +10,10 @@ namespace SampleLoginApp.Common
         [FromQuery(Name = "p")]
         public int PageNumber { get; set; } = 1;
 
+
+        [FromQuery(Name = "s")]
+        public string? SearchKeyword { get; set; }
+
+
     }
 }

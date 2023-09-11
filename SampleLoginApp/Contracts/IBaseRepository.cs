@@ -1,4 +1,5 @@
 ﻿using SampleLoginApp.Common;
+using System.Linq.Expressions;
 
 namespace SampleLoginApp.Contracts
 {
@@ -11,7 +12,7 @@ namespace SampleLoginApp.Contracts
         Task Update(object id, object model);
         Task Delete (object id);
 
-        Task<PaginatedResult<T>> GetPaginated(int page, int pageSize);
+        Task<PaginatedResult<T>> GetPaginated(int page, int pageSize, Expression<Func<T, bool>> condition);
 
     }
 }

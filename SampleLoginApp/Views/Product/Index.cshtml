@@ -15,10 +15,24 @@
                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                </div>
             }
+    
+
+        <div class="col-6">
+            <a asp-action = "Create" class="btn btn-primary mb-2">New Product</a>
         </div>
 
+        <div class="col-6">
+            <form asp-action="Index" method="get">
+                <div class="input-group">
+                    <input type="text" name="s" class="form-control" value="@Model.SearchKeyword" />
+                    <button type="submit" class="btn btn-success">Search</button>
+                </div>
+            </form>
+        </div>
+
+
             <div class="col-12">
-         <a asp-action="Create" class="btn btn-primary mb-2"> New Product</a>
+              @*<a asp-action="Create" class="btn btn-primary mb-2"> New Product</a>*@
                   <table class="table table-bordered table-hover table-sm font-sm">
                       <colgroup> 
                            <col class="col-3"/>
@@ -49,7 +63,7 @@
                   <nav>
                       <ul class="pagination justify-content-center">
                           <li class="page-item @(Model.Page == 1 ? "disabled" : "")">
-                              <a class="page-link" asp-route-p="@Model.Page - 1">Previous</a>
+                        <a class="page-link" asp-route-s="@Model.SearchKeyword" asp-route-p="@Model.Page - 1">Previous</a>
                           </li>
                    @for (var pageNumber = 1; pageNumber <= Model.TotalCount; pageNumber++)
                 {
@@ -62,15 +76,17 @@
                     else
                     {
                         <li class="page-item">
-                            <a class="page-link" asp-route-p="@pageNumber">@pageNumber</a>
+                            <a class="page-link" asp-route-s="@Model.SearchKeyword" asp-route-p="@pageNumber">@pageNumber</a>
                         </li>
                     }
                 }
                 <li class="page-item @(Model.Page == Model.TotalCount ? "disabled" : "")">
-                    <a class="page-link" asp-route-p="@(Model.Page + 1)">Next</a>
-                </li>
+                        <a class="page-link" asp-route-s="@Model.SearchKeyword"  asp-route-p="@(Model.Page + 1)">Next</a>
+                </li> 
             </ul>
-                  </nav>
+                  </nav> 
             </div>
+    </div>
+
     </div>
     

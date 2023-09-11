@@ -19,6 +19,7 @@ builder.Services.AddDefaultIdentity<AppIdentity>(options => {
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

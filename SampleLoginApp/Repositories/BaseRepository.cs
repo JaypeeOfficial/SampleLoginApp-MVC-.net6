@@ -2,6 +2,7 @@
 using SampleLoginApp.Common;
 using SampleLoginApp.Contracts;
 using SampleLoginApp.Data;
+using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 
 namespace SampleLoginApp.Repositories
@@ -55,16 +56,17 @@ namespace SampleLoginApp.Repositories
             }
         }
 
-        public async Task<PaginatedResult<T>> GetPaginated(int page, int pageSize)
+        public async Task<PaginatedResult<T>> GetPaginated(int page, int pageSize,
+                        Expression<Func<T, bool>> condition) 
         {
-           var count = await _table.CountAsync();
-           var records = await _table
+           var count = await _table.Where(condition).CountAsync();
+           var records = await _table.Where(condition)
                         .Skip((page - 1 ) * pageSize)
                         .Take(pageSize)
                         .ToListAsync();
 
             return new PaginatedResult<T>
-            {
+            { 
                 Result = records,
                 Page = page,
                 TotalCount = (int)Math.Ceiling(count / (double)pageSize)

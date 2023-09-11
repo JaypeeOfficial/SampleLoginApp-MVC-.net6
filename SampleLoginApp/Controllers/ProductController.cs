@@ -9,15 +9,20 @@ namespace SampleLoginApp.Controllers
 
     public class ProductController : BaseController
     {
-        private readonly IBaseRepository<Product> _repo;
-        public ProductController(IBaseRepository<Product> repo)
+        private readonly IProductRepository _repo;
+        public ProductController(IProductRepository repo)
         {
             _repo = repo;
         }
 
         public async Task<IActionResult> Index(PaginatedRequest request)
         {
-            var products = await _repo.GetPaginated(request.PageNumber, PaginatedRequest.ITEMS_PER_PAGE);
+            var products = await _repo.GetPaginated(
+                             request.PageNumber,
+                             PaginatedRequest.ITEMS_PER_PAGE,
+                             request.SearchKeyword ?? string.Empty
+                             );
+            products.SearchKeyword = request.SearchKeyword; 
 
             return View(products);
         }
