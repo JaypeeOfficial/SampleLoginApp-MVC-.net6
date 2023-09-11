@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SampleLoginApp.Common;
 using SampleLoginApp.Contracts;
 using SampleLoginApp.Data;
 using System.Runtime.InteropServices;
@@ -54,8 +55,21 @@ namespace SampleLoginApp.Repositories
             }
         }
 
-     
-      
+        public async Task<PaginatedResult<T>> GetPaginated(int page, int pageSize)
+        {
+           var count = await _table.CountAsync();
+           var records = await _table
+                        .Skip((page - 1 ) * pageSize)
+                        .Take(pageSize)
+                        .ToListAsync();
 
+            return new PaginatedResult<T>
+            {
+                Result = records,
+                Page = page,
+                TotalCount = (int)Math.Ceiling(count / (double)pageSize)
+            };
+
+        }
     }
 }

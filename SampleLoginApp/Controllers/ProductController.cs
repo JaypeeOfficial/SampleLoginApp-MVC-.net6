@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SampleLoginApp.Common;
 using SampleLoginApp.Contracts;
 using SampleLoginApp.Data;
 
@@ -14,9 +15,9 @@ namespace SampleLoginApp.Controllers
             _repo = repo;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(PaginatedRequest request)
         {
-            var products = await _repo.GetAll();
+            var products = await _repo.GetPaginated(request.PageNumber, PaginatedRequest.ITEMS_PER_PAGE);
 
             return View(products);
         }

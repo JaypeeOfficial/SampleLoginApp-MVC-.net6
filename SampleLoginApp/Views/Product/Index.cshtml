@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Product>
+﻿@model PaginatedResult<Product>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 
@@ -20,7 +20,7 @@
             <div class="col-12">
          <a asp-action="Create" class="btn btn-primary mb-2"> New Product</a>
                   <table class="table table-bordered table-hover table-sm font-sm">
-                      <colgroup>
+                      <colgroup> 
                            <col class="col-3"/>
                            <col class="col-7" />
                            <col class="col-2" />       
@@ -33,7 +33,7 @@
                           </tr>
                       </thead>
                       <tbody>
-                          @foreach (var product in Model)
+                          @foreach (var product in Model.Result)
                     {
                         <tr>
                             <td>@product.ProductName</td>
@@ -46,6 +46,31 @@
                     }
                 </tbody>
                   </table>
+                  <nav>
+                      <ul class="pagination justify-content-center">
+                          <li class="page-item @(Model.Page == 1 ? "disabled" : "")">
+                              <a class="page-link" asp-route-p="@Model.Page - 1">Previous</a>
+                          </li>
+                   @for (var pageNumber = 1; pageNumber <= Model.TotalCount; pageNumber++)
+                {
+                    if(pageNumber == Model.Page)
+                    {
+                        <li class="page-item active">
+                            <span class="page-link">@pageNumber</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-route-p="@pageNumber">@pageNumber</a>
+                        </li>
+                    }
+                }
+                <li class="page-item @(Model.Page == Model.TotalCount ? "disabled" : "")">
+                    <a class="page-link" asp-route-p="@(Model.Page + 1)">Next</a>
+                </li>
+            </ul>
+                  </nav>
             </div>
     </div>
     
